@@ -23,7 +23,9 @@ Thuc-Hanh-IOT/
     │   ├── light_server_bai3.py
     │   ├── light_controller_bai3.py
     │   └── light_monitor_bai3.py
+    ├── images/
     └── README.md
+
 ```
 
 ## 3. Phiên bản Python và thư viện
