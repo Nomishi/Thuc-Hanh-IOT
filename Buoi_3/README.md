@@ -118,11 +118,41 @@ python light_controller_bai3.py   # terminal 3
 - **Bài 2:** Server cập nhật dữ liệu mỗi 3 giây, trả JSON đúng định dạng kèm Content-Format `application/json`. Client truy vấn định kỳ, phân tích JSON, hiển thị đầy đủ thông tin và cảnh báo đúng điều kiện ngưỡng, thống kê số lần GET và thời gian phản hồi trung bình.
 - **Bài 3:** Server quản lý tài nguyên đèn, PUT đổi trạng thái đúng lệnh, chỉ thông báo Observe khi trạng thái thay đổi, từ chối lệnh không hợp lệ. Controller điều khiển được đèn bằng ON/OFF/STATUS. Monitor đăng ký Observe thành công và tự động nhận thông báo (không dùng polling); nhiều Monitor nhận thông báo đồng thời.
 
-## 8. Log minh chứng chương trình hoạt động
+## 8. Hình ảnh và log minh chứng chương trình hoạt động
+
+Ảnh chụp màn hình các terminal khi chạy (Server và Client cạnh nhau) nằm trong thư mục `images/`. Log bên dưới được copy từ terminal khi nhóm chạy thực tế.
 
 ### Bài 1
 
-Client:
+![Bài 1: CoAP Server (trái) và CoAP Client (phải)](images/bai1.png)
+
+Log CoAP Server:
+
+```
+CoAP Server started on port 5683
+Resource: coap://127.0.0.1:5683/iot/lab/message
+Bam Ctrl+C de dung.
+
+GET request received: /iot/lab/message
+
+POST request received:
+Payload: Xin chao tu CoAP Client - B23DCCN584 - Nguyen Hoang Nam | B23DCCN486 - Nguyen Khanh Linh | B23DCCN500 - Le Hien Long - lan 1
+Time: 11:05:41
+
+POST request received:
+Payload: Xin chao tu CoAP Client - B23DCCN584 - Nguyen Hoang Nam | B23DCCN486 - Nguyen Khanh Linh | B23DCCN500 - Le Hien Long - lan 2
+Time: 11:05:42
+
+POST request received:
+Payload: Xin chao tu CoAP Client - B23DCCN584 - Nguyen Hoang Nam | B23DCCN486 - Nguyen Khanh Linh | B23DCCN500 - Le Hien Long - lan 3
+Time: 11:05:43
+
+GET request received: /iot/lab/message
+
+Da dung CoAP Server
+```
+
+Log CoAP Client:
 
 ```
 CoAP Client
@@ -140,72 +170,179 @@ Response:
 Code: 2.04 Changed
 Payload: Server da nhan thong diep
 
-...
+Sending POST request...
+Payload: Xin chao tu CoAP Client - B23DCCN584 - Nguyen Hoang Nam | B23DCCN486 - Nguyen Khanh Linh | B23DCCN500 - Le Hien Long - lan 2
+
+Response:
+Code: 2.04 Changed
+Payload: Server da nhan thong diep
+
+Sending POST request...
+Payload: Xin chao tu CoAP Client - B23DCCN584 - Nguyen Hoang Nam | B23DCCN486 - Nguyen Khanh Linh | B23DCCN500 - Le Hien Long - lan 3
+
+Response:
+Code: 2.04 Changed
+Payload: Server da nhan thong diep
+
+Sending GET request (lay thong diep gan nhat)...
+URI: coap://127.0.0.1:5683/iot/lab/message
+
+Response:
+Code: 2.05 Content
+Payload: Xin chao tu CoAP Server | Thong diep gan nhat: Xin chao tu CoAP Client - B23DCCN584 - Nguyen Hoang Nam | B23DCCN486 - Nguyen Khanh Linh | B23DCCN500 - Le Hien Long - lan 3
 
 Sending GET request toi tai nguyen khong ton tai...
 URI: coap://127.0.0.1:5683/iot/lab/khong_ton_tai
 
 Response:
 Code: 4.04 Not Found
-Payload:
-```
-
-Server:
-
-```
-CoAP Server started on port 5683
-Resource: coap://127.0.0.1:5683/iot/lab/message
-Bam Ctrl+C de dung.
-
-GET request received: /iot/lab/message
-
-POST request received:
-Payload: Xin chao tu CoAP Client - B23DCCN584 - Nguyen Hoang Nam | B23DCCN486 - Nguyen Khanh Linh | B23DCCN500 - Le Hien Long - lan 1
-Time: 03:48:28
+Payload: 
 ```
 
 ### Bài 2
 
-Client (Monitoring):
+![Bài 2: Sensor Server (trái) và Monitoring Client (phải)](images/bai2.png)
+
+Log Sensor Server:
 
 ```
-[03:49:04] Received sensor data
+Sensor CoAP Server started on port 5683
+Resource: coap://127.0.0.1:5683/iot/lab/sensor01/data
+Bam Ctrl+C de dung.
+
+[11:12:44] Cap nhat cam bien: 34.4 C, 64.9 %
+[11:12:47] Cap nhat cam bien: 33.2 C, 48.7 %
+[11:12:48] GET request received: tra ve du lieu hien tai
+[11:12:50] Cap nhat cam bien: 33.8 C, 65.3 %
+[11:12:51] GET request received: tra ve du lieu hien tai
+[11:12:53] Cap nhat cam bien: 30.3 C, 34.2 %
+[11:12:54] GET request received: tra ve du lieu hien tai
+[11:12:56] Cap nhat cam bien: 39.5 C, 60.1 %
+[11:12:57] GET request received: tra ve du lieu hien tai
+[11:12:59] Cap nhat cam bien: 38.5 C, 45.3 %
+[11:13:00] GET request received: tra ve du lieu hien tai
+[11:13:02] Cap nhat cam bien: 30.9 C, 51.4 %
+[11:13:03] GET request received: tra ve du lieu hien tai
+[11:13:05] Cap nhat cam bien: 30.2 C, 48.7 %
+[11:13:06] GET request received: tra ve du lieu hien tai
+[11:13:08] Cap nhat cam bien: 35.0 C, 50.0 %
+[11:13:09] GET request received: tra ve du lieu hien tai
+[11:13:11] Cap nhat cam bien: 34.9 C, 44.2 %
+[11:13:12] GET request received: tra ve du lieu hien tai
+[11:13:14] Cap nhat cam bien: 36.7 C, 79.4 %
+Da dung Sensor Server
+```
+
+Log Monitoring Client:
+
+```
+Monitoring Client: GET coap://127.0.0.1:5683/iot/lab/sensor01/data moi 3 giay. Bam Ctrl+C de dung.
+
+[11:12:48] Received sensor data
 
 Device: sensor01
-Temperature: 26.2 C
-Humidity: 39.8 %
-
-CANH BAO: Do am thap
-
-------------------------------
-
-[03:49:10] Received sensor data
-
-Device: sensor01
-Temperature: 35.4 C
-Humidity: 35.0 %
-
-CANH BAO: Nhiet do cao
-CANH BAO: Do am thap
-
-------------------------------
-
-[03:49:13] Received sensor data
-
-Device: sensor01
-Temperature: 33.7 C
-Humidity: 52.8 %
+Temperature: 33.2 C
+Humidity: 48.7 %
 
 Trang thai: Binh thuong
+
+------------------------------
+
+[11:12:51] Received sensor data
+
+Device: sensor01
+Temperature: 33.8 C
+Humidity: 65.3 %
+
+Trang thai: Binh thuong
+
+------------------------------
+
+[11:12:54] Received sensor data
+
+Device: sensor01
+Temperature: 30.3 C
+Humidity: 34.2 %
+
+CANH BAO: Do am thap
+
+------------------------------
+
+[11:12:57] Received sensor data
+
+Device: sensor01
+Temperature: 39.5 C
+Humidity: 60.1 %
+
+CANH BAO: Nhiet do cao
+
+------------------------------
+
+[11:13:00] Received sensor data
+
+Device: sensor01
+Temperature: 38.5 C
+Humidity: 45.3 %
+
+CANH BAO: Nhiet do cao
+
+------------------------------
+
+[11:13:03] Received sensor data
+
+Device: sensor01
+Temperature: 30.9 C
+Humidity: 51.4 %
+
+Trang thai: Binh thuong
+
+------------------------------
+
+[11:13:06] Received sensor data
+
+Device: sensor01
+Temperature: 30.2 C
+Humidity: 48.7 %
+
+Trang thai: Binh thuong
+
+------------------------------
+
+[11:13:09] Received sensor data
+
+Device: sensor01
+Temperature: 35.0 C
+Humidity: 50.0 %
+
+Trang thai: Binh thuong
+
+------------------------------
+
+[11:13:12] Received sensor data
+
+Device: sensor01
+Temperature: 34.9 C
+Humidity: 44.2 %
+
+Trang thai: Binh thuong
+
+------------------------------
+
+So lan GET thanh cong: 9
+Thoi gian phan hoi trung binh: 1.4 ms
+Da dung Monitoring Client
 ```
 
 ### Bài 3
 
-Server:
+![Bài 3: Light Server, Light Monitor và Light Controller](images/bai3.png)
+
+Log Smart Light Server:
 
 ```
 CoAP Smart Light Server started...
 Resource: /iot/lab/light01/status (coap://127.0.0.1:5683)
+Bam Ctrl+C de dung.
 
 New Observe registration received
 
@@ -220,9 +357,31 @@ Device: light01
 Command: OFF
 Light state changed: ON -> OFF
 Notify observers: OFF
+
+PUT request received:
+Device: light01
+Command: ON
+Light state changed: OFF -> ON
+Notify observers: ON
+
+PUT request received:
+Device: light01
+Command: OFF
+Light state changed: ON -> OFF
+Notify observers: OFF
+
+PUT request received:
+Device: light01
+Command: ON
+Light state changed: OFF -> ON
+Notify observers: ON
+
+Mot Client da huy Observe
+
+Da dung Smart Light Server
 ```
 
-Controller:
+Log Light Controller (có thử nhập lệnh sai `OF`, chương trình báo lỗi và tiếp tục):
 
 ```
 Nhap lenh (ON/OFF/STATUS/EXIT): ON
@@ -231,28 +390,178 @@ Sending PUT request...
 Response Code: 2.04 Changed
 Da bat den light01
 
+Nhap lenh (ON/OFF/STATUS/EXIT): OFF
+
+Sending PUT request...
+Response Code: 2.04 Changed
+Da tat den light01
+
 Nhap lenh (ON/OFF/STATUS/EXIT): STATUS
 
 Sending GET request...
 Response:
-{"device_id":"light01","status":"ON"}
+{"device_id":"light01","status":"OFF"} 
+
+Nhap lenh (ON/OFF/STATUS/EXIT): abc
+Loi: lenh khong hop le, chi nhan ON, OFF, STATUS hoac EXIT
+
+Nhap lenh (ON/OFF/STATUS/EXIT): ON
+
+Sending PUT request...
+Response Code: 2.04 Changed
+Da bat den light01
+
+Nhap lenh (ON/OFF/STATUS/EXIT): abcdef
+Loi: lenh khong hop le, chi nhan ON, OFF, STATUS hoac EXIT
+
+Nhap lenh (ON/OFF/STATUS/EXIT): OFF
+
+Sending PUT request...
+Response Code: 2.04 Changed
+Da tat den light01
+
+Nhap lenh (ON/OFF/STATUS/EXIT): STATUS
+
+Sending GET request...
+Response:
+{"device_id":"light01","status":"OFF"} 
+
+Nhap lenh (ON/OFF/STATUS/EXIT): ON
+
+Sending PUT request...
+Response Code: 2.04 Changed
+Da bat den light01
+
+Nhap lenh (ON/OFF/STATUS/EXIT): EXIT
+Da thoat Light Controller
 ```
 
-Monitor:
+Log Light Monitor (Observe, tự nhận thông báo khi trạng thái thay đổi):
 
 ```
+Monitoring Client: GET coap://127.0.0.1:5683/iot/lab/sensor01/data moi 3 giay. Bam Ctrl+C de dung.
+
+[11:12:48] Received sensor data
+
+Device: sensor01
+Temperature: 33.2 C
+Humidity: 48.7 %
+
+Trang thai: Binh thuong
+
+------------------------------
+
+[11:12:51] Received sensor data
+
+Device: sensor01
+Temperature: 33.8 C
+Humidity: 65.3 %
+
+Trang thai: Binh thuong
+
+------------------------------
+
+[11:12:54] Received sensor data
+
+Device: sensor01
+Temperature: 30.3 C
+Humidity: 34.2 %
+
+CANH BAO: Do am thap
+
+------------------------------
+
+[11:12:57] Received sensor data
+
+Device: sensor01
+Temperature: 39.5 C
+Humidity: 60.1 %
+
+CANH BAO: Nhiet do cao
+
+------------------------------
+
+[11:13:00] Received sensor data
+
+Device: sensor01
+Temperature: 38.5 C
+Humidity: 45.3 %
+
+CANH BAO: Nhiet do cao
+
+------------------------------
+
+[11:13:03] Received sensor data
+
+Device: sensor01
+Temperature: 30.9 C
+Humidity: 51.4 %
+
+Trang thai: Binh thuong
+
+------------------------------
+
+[11:13:06] Received sensor data
+
+Device: sensor01
+Temperature: 30.2 C
+Humidity: 48.7 %
+
+Trang thai: Binh thuong
+
+------------------------------
+
+[11:13:09] Received sensor data
+
+Device: sensor01
+Temperature: 35.0 C
+Humidity: 50.0 %
+
+Trang thai: Binh thuong
+
+------------------------------
+
+[11:13:12] Received sensor data
+
+Device: sensor01
+Temperature: 34.9 C
+Humidity: 44.2 %
+
+Trang thai: Binh thuong
+
+------------------------------
+
+So lan GET thanh cong: 9
+Thoi gian phan hoi trung binh: 1.4 ms
+Da dung Monitoring Client
+PS D:\Thuc-Hanh-IOT\Buoi_3\bai2>    cd D:\Thuc-Hanh-IOT\Buoi_3\bai3
+>>    python light_monitor_bai3.py
 Registering CoAP Observe...
 Observe registration successful
 
-[03:49:30] Initial State
+[11:15:23] Initial State
 Device: light01
 Status: OFF
 
-[03:49:33] State Updated
+[11:15:34] State Updated
 Device: light01
 Status: ON
 
-[03:49:36] State Updated
+[11:15:37] State Updated
 Device: light01
 Status: OFF
+
+[11:16:10] State Updated
+Device: light01
+Status: ON
+
+[11:16:16] State Updated
+Device: light01
+Status: OFF
+
+[11:16:29] State Updated
+Device: light01
+Status: ON
+
+Da dung Light Monitor
 ```
